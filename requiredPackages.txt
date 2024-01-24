@@ -1,0 +1,4 @@
+Required packages for this project are NetworkX and Matplotlib 
+to intall them run this command in terminal 
+
+python -m pip install networkx matplotlib

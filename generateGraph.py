@@ -1,25 +1,26 @@
 import networkx as nx
 import random
-##ASCII A=65.... Z=90
+
 def verticeLetters(verticeCount):
-     return [chr(65 + i) for i in range(verticeCount)]
+    return [chr(65 + i) for i in range(verticeCount)]
 
-def generateGraph(a):
-    # Example usage
-    verticeCount = 8 # a
+def generateGraph(verticeCount=7):
+    G = nx.Graph()
     vertices = verticeLetters(verticeCount)
-    #print(vertices)
-    #vertices = ['A', 'B', 'C', 'D', 'E']
-    
-    Graph = nx.Graph()
-    for vertex in vertices:
-        Graph.add_node(vertex)
+    G.add_nodes_from(vertices)
 
-    ## algorithm to add edges and weights for specific cases
-    randomEdgeCount= random.randint(2, 5) ## degree of each vertice
-    #print(randomEdgeCount)
-    Graph.add_edge('D', 'E', weight=6)
+    for i in range(1, verticeCount):
+        G.add_edge(vertices[i], vertices[random.randint(0, i - 1)], weight=random.randint(1, 10))
 
-    # Print the graph's nodes and edges
-    print("Nodes:", Graph.nodes())
-    print("Edges:", Graph.edges(data=True))
+    # loop kas parbauda loku skaitu
+    while True:
+        for node in G.nodes():
+            while len(list(G.edges(node))) < 2:
+                target = vertices[random.randint(0, verticeCount - 1)]
+                if target != node and not G.has_edge(node, target):
+                    G.add_edge(node, target, weight=random.randint(1, 10))
+
+        if all(2 <= len(list(G.edges(node))) <= 5 for node in G.nodes()):
+            break
+
+    return G

@@ -21,7 +21,7 @@ def main():
     verticesCount = ttk.Entry(inputFrm, textvariable=verticesVar)
     verticesCount.pack(side="top")
 
-    imageFrm = ttk.Frame(root, padding=10)
+    imageFrm = ttk.Frame(root, padding=2)
     imageFrm.pack(expand=True, fill=tk.BOTH)
     label = tk.Label(imageFrm)  # Create the label and store it in a variable
     label.pack(expand=True, fill=tk.BOTH)  # Now pack the label

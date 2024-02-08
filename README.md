@@ -1,6 +1,6 @@
 # English
 # PrimsAlgoGraphGenerator
-Python project for creating graphs with specific weights that will serve the purpose of teaching Prims algorithm
+Python project for creating graphs with specific weights that will serve the purpose of teaching Prims algorithm - in development stage
 # generateGrahp.py
 This file generates graph with specific weights where there are:
 a) 7-15 vertices (ammount entered by user)

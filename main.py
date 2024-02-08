@@ -32,10 +32,12 @@ def main():
             G = generateGraph(int(vertices))  # Generate the graph
             graph_image = drawGraph(G)        # Draw the graph and get the image
             photo = ImageTk.PhotoImage(graph_image)
+
             label.config(image=photo)
-            label.image = photo  # Keep a reference
+            label.image = photo  # Keep a reference to avoid garbage collection
         else:
             print("Please enter a valid integer between 7 and 15")
+
 
     ttk.Button(inputFrm, text="Generate Graph", command=generateBtnClick, style='Green.TButton').pack(side="top", padx=10, pady=5)
 

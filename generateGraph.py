@@ -4,7 +4,7 @@ import random
 def verticeLetters(verticeCount):
     return [chr(65 + i) for i in range(verticeCount)]
 
-def generateGraph(verticeCount=7):
+def generateGraph(verticeCount):
     G = nx.Graph()
     vertices = verticeLetters(verticeCount)
     G.add_nodes_from(vertices)

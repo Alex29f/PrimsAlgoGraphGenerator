@@ -3,6 +3,7 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from drawGraph import drawGraph
 from generateGraph import generateGraph
+import gc
 
 def main():
     root = tk.Tk()
@@ -34,7 +35,9 @@ def main():
             photo = ImageTk.PhotoImage(graph_image)
 
             label.config(image=photo)
-            label.image = photo  # Keep a reference to avoid garbage collection
+            label.image = photo
+
+            gc.collect()
         else:
             print("Please enter a valid integer between 7 and 15")
 

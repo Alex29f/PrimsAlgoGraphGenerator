@@ -24,8 +24,8 @@ def main():
 
     imageFrm = ttk.Frame(root, padding=2)
     imageFrm.pack(expand=True, fill=tk.BOTH)
-    label = tk.Label(imageFrm).pack(expand=True, fill=tk.BOTH)  
- 
+    label = tk.Label(imageFrm)
+    label.pack(expand=True, fill=tk.BOTH)  
 
     def generateBtnClick():
         vertices = verticesVar.get()
@@ -33,8 +33,10 @@ def main():
             G = generateGraph(int(vertices))
             graph_image = drawGraph(G)
             photo = ImageTk.PhotoImage(graph_image)
+
             label.config(image=photo)
             label.image = photo
+
             gc.collect()
         else:
             print("Please enter a valid integer between 7 and 15")

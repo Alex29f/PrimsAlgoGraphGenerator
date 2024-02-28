@@ -4,7 +4,7 @@ import io
 from PIL import Image
 
 def drawGraph(G):
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize=(12, 10))
     pos = nx.spring_layout(G)
     nx.draw(G, pos, with_labels=True, node_color='lightblue', edge_color='gray', width=2)
     edge_labels = nx.get_edge_attributes(G, 'weight')

@@ -39,6 +39,7 @@ def main():
 
             gc.collect()
         else:
+            #sito japartaisa par popup
             print("Please enter a valid integer between 7 and 15")
 
 

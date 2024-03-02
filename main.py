@@ -45,10 +45,9 @@ def main():
             #gc.collect()
         else:
             #sito japartaisa par popup
-            mstLabel.config(text="Please enter a valid integer between 7 and 15", foreground="red")
-            #print("Please enter a valid integer between 7 and 15")
+            mstLabel.config(text="Vertex count should be 7 to 15", foreground="red")
+            #print("input 7 to 15")
 
-    # vajag pievienot arī MST grumu pie izvades
     ttk.Button(inputFrm, text="Generate Graph", command=generateBtnClick, style='Green.TButton').pack(side="top", padx=10, pady=5)
 
     quit_frame = ttk.Frame(root, padding=10)

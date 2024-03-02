@@ -1,28 +1,42 @@
 import networkx as nx
 import random
 import matplotlib.pyplot as plt
-import io
+#import io ##do this for inserting image in tkinter window 
 from PIL import Image
-
 
 def verticeLetters(verticeCount):
     return [chr(65 + i) for i in range(verticeCount)]
-
+fig = None
+ax = None
 def drawGraph(G, startVertex):
-    plt.figure(figsize=(12, 10))
+    global fig, ax
+    if fig is None or ax is None:
+        fig, ax = plt.subplots(figsize=(12, 10))
+    else:
+        ax.clear()
     pos = nx.spring_layout(G)
     node_colors = ['green' if node == startVertex else 'lightblue' for node in G.nodes()]
-    nx.draw(G, pos, with_labels=True, node_color=node_colors, edge_color='gray', width=2)
+    nx.draw(G, pos, with_labels=True, node_color=node_colors, edge_color='gray', width=2, ax=ax)
     edge_labels = nx.get_edge_attributes(G, 'weight')
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
-    buf = io.BytesIO()
-    plt.savefig(buf, format='png')
-    buf.seek(0)
-    plt.clf()
-    plt.cla()
-    plt.close()
-    img = Image.open(buf)
-    return img
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, ax=ax)
+    plt.show()
+
+#uncomment this code if you want the graph to be drawn into the tkinter window
+#def drawGraph2(G, startVertex):
+    #plt.figure(figsize=(12, 10))
+    #pos = nx.spring_layout(G)
+    #node_colors = ['green' if node == startVertex else 'lightblue' for node in G.nodes()]
+    #nx.draw(G, pos, with_labels=True, node_color=node_colors, edge_color='gray', width=2)
+    #edge_labels = nx.get_edge_attributes(G, 'weight')
+    #nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
+    #buf = io.BytesIO()
+    #plt.savefig(buf, format='png')
+    #buf.seek(0)
+    #plt.clf()
+    #plt.cla()
+    #plt.close()
+    #img = Image.open(buf)
+    #return img
 
 def addEdge(G, v1, v2, weight):
     if G.degree[v1] < 5 and G.degree[v2] < 5 and not G.has_edge(v1, v2):
@@ -89,10 +103,9 @@ def generateGraph(verticeCount):
                     weight = random.randint(1, 6)
                 addEdge(G, v, potential_end, weight)
 
-   
     mst = nx.minimum_spanning_tree(G)
     mstweight = sum(mst[u][v]['weight'] for u, v in mst.edges())
     print("MST val:", mstweight)
+    #drawGraph(G, startVertex)
+    return G, mstweight, startVertex
     
-
-    return drawGraph(G, startVertex)

@@ -1,9 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
-from PIL import Image, ImageTk
-#from drawGraph import drawGraph
 from generateGraph import generateGraph
-import gc
+from generateGraph import drawGraph
+#from PIL import Image, ImageTk
+#import gc
+#from drawGraph import drawGraph
 
 def main():
     root = tk.Tk()
@@ -27,17 +28,25 @@ def main():
     label = tk.Label(imageFrm)
     label.pack(expand=True, fill=tk.BOTH)  
 
+    mstLabel = ttk.Label(frm, text="MST weight will be shown here")
+    mstLabel.pack(side="top", pady=5)
     def generateBtnClick():
         vertices = verticesVar.get()
         if vertices.isdigit() and 7 <= int(vertices) <= 15:
-            graph_image = generateGraph(int(vertices))
-            photo = ImageTk.PhotoImage(graph_image)
-            label.config(image=photo)
-            label.image = photo
-            gc.collect()
+            G, mstweight,startVertex=generateGraph(int(vertices))
+            print("mstweight from ttk", mstweight)
+            mstLabel.config(text=f"MST weight: {mstweight}", foreground="green")
+            drawGraph(G, startVertex)
+            #root.update_idletasks()#salabo to ka 1.reize neparadas mst
+            #uncomment this portion and drawGraph2 function for the graph to be drawn in tkinter window not new window
+            #photo = ImageTk.PhotoImage(graph_image)
+            #label.config(image=photo)
+            #label.image = photo
+            #gc.collect()
         else:
             #sito japartaisa par popup
-            print("Please enter a valid integer between 7 and 15")
+            mstLabel.config(text="Please enter a valid integer between 7 and 15", foreground="red")
+            #print("Please enter a valid integer between 7 and 15")
 
     # vajag pievienot arī MST grumu pie izvades
     ttk.Button(inputFrm, text="Generate Graph", command=generateBtnClick, style='Green.TButton').pack(side="top", padx=10, pady=5)

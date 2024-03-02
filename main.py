@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
-from drawGraph import drawGraph
+#from drawGraph import drawGraph
 from generateGraph import generateGraph
 import gc
 
@@ -30,19 +30,16 @@ def main():
     def generateBtnClick():
         vertices = verticesVar.get()
         if vertices.isdigit() and 7 <= int(vertices) <= 15:
-            G = generateGraph(int(vertices))
-            graph_image = drawGraph(G)
+            graph_image = generateGraph(int(vertices))
             photo = ImageTk.PhotoImage(graph_image)
-
             label.config(image=photo)
             label.image = photo
-
             gc.collect()
         else:
             #sito japartaisa par popup
             print("Please enter a valid integer between 7 and 15")
 
-
+    # vajag pievienot arī MST grumu pie izvades
     ttk.Button(inputFrm, text="Generate Graph", command=generateBtnClick, style='Green.TButton').pack(side="top", padx=10, pady=5)
 
     quit_frame = ttk.Frame(root, padding=10)

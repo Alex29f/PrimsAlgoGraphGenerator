@@ -1,21 +1,98 @@
 import networkx as nx
 import random
+import matplotlib.pyplot as plt
+import io
+from PIL import Image
+
 
 def verticeLetters(verticeCount):
     return [chr(65 + i) for i in range(verticeCount)]
+
+def drawGraph(G, startVertex):
+    plt.figure(figsize=(12, 10))
+    pos = nx.spring_layout(G)
+    node_colors = ['green' if node == startVertex else 'lightblue' for node in G.nodes()]
+    nx.draw(G, pos, with_labels=True, node_color=node_colors, edge_color='gray', width=2)
+    edge_labels = nx.get_edge_attributes(G, 'weight')
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    buf.seek(0)
+    plt.clf()
+    plt.cla()
+    plt.close()
+    img = Image.open(buf)
+    return img
+
+def addEdge(G, v1, v2, weight):
+    if G.degree[v1] < 5 and G.degree[v2] < 5 and not G.has_edge(v1, v2):
+        G.add_edge(v1, v2, weight=weight)
+        return True
+    return False
 
 def generateGraph(verticeCount):
     G = nx.Graph()
     vertices = verticeLetters(verticeCount)
     G.add_nodes_from(vertices)
+    # virsotņu inicializācija svaru vēlākai implementācijai
+    startVertex = random.choice(vertices)
+    print("startvertex:", startVertex)# sakuma virsotne
+    vertices.remove(startVertex)
+    nextVertex = random.choice(vertices)# virsotne uz kuru paries prima algoritms
+    print("nextVert:", nextVertex)
+    vertices.remove(nextVertex)
+    startWeight = random.randint(1, 2) # prima algoritma 1.iteracija vienmer izvelesies so svaru
+    addEdge(G, startVertex, nextVertex, startWeight)
 
-    for i in range(1, verticeCount):
-        G.add_edge(vertices[i-1], vertices[i], weight=random.randint(1, 10))
+    #sākuma virsotnes loku pievienošana ta lai velak varetu 
+    defaultVerticeCount=3
+    if verticeCount==7: #grafam ar 7 virsotnem nebus liekas virsotnes ja nesamazinas lielumu
+        defaultVerticeCount=2        
+    startVertexVerticesCount = random.randint(1, defaultVerticeCount) 
+    startVertexVertices = random.sample(vertices, startVertexVerticesCount)
+    print("startVertexVertices:", startVertexVertices)
+    unique_weights = [4, 5, 6]
+    random.shuffle(unique_weights)
+#sakuma virsonei ir pievienotas virsotnes ar loku svariem 4-6 
+    #prima algoritma 3 iteracija atgriezisies pie 2 iteracija ieguta loka
+    for v in startVertexVertices:
+        vertices.remove(v)
+        weight = unique_weights.pop()
+        addEdge(G, startVertex, v, weight)
 
-    for node in vertices:
-        while len(G.edges(node)) < 2 or (len(G.edges(node)) < 5 and random.random() > 0.5):
-            target = random.choice(vertices)
-            if target != node and not G.has_edge(node, target) and len(G.edges(target)) < 5:
-                G.add_edge(node, target, weight=random.randint(1, 10))
+    # 2. nosacijuma implementacija - 2 soli jaizvelas starp 2 vienadam vertibam
+    nextVertexVertices = random.sample(vertices, min(2, len(vertices)))
+    print("nextVertexVertices:", nextVertexVertices)
+    for v in nextVertexVertices:
+        vertices.remove(v)
+        addEdge(G, nextVertex, v, 3)
 
-    return G
+    #1. nosacijuma implementacija - jaizvelas vai atjaunot iezimes vertibu vai ne
+    vertexstep1 = random.choice(vertices)
+    print("vertexstep1:", vertexstep1)
+    vertices.remove(vertexstep1)
+    randomNextVertexVertex=random.choice(nextVertexVertices)
+    randomWeightS1=random.randint(7, 10) 
+    #no nextvertexvertices algoritms savienots ar vienu no brivajam virsotnem un sakuma virsotni
+    G.add_edge(vertexstep1, startVertex, weight=randomWeightS1) 
+    G.add_edge(vertexstep1,randomNextVertexVertex, weight=randomWeightS1) 
+    #sakums 4 sola implementacija kur vajag panakt ka meklejot virsones visas jau ir ieklautas karkasa un iezimes neatjauno
+    namedVertices = [vertexstep1, nextVertex, startVertex] + nextVertexVertices + startVertexVertices
+    print("namedVertices", namedVertices)
+    for v in G.nodes:
+        while G.degree[v] < 2:
+            potential_end = random.choice(list(G.nodes))
+            if v != potential_end and G.degree[potential_end] < 5:
+                if potential_end in namedVertices or v in namedVertices:
+                    weight = random.randint(7, 10)
+                else:
+                    weight = random.randint(1, 6)
+                addEdge(G, v, potential_end, weight)
+
+   
+    mst = nx.minimum_spanning_tree(G)
+    mstweight = sum(mst[u][v]['weight'] for u, v in mst.edges())
+    print("MST val:", mstweight)
+    
+
+    return drawGraph(G, startVertex)

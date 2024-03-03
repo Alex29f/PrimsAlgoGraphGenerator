@@ -2,7 +2,7 @@ import networkx as nx
 import random
 import matplotlib.pyplot as plt
 #import io ##do this for inserting image in tkinter window 
-from PIL import Image
+#from PIL import Image
 
 def verticeLetters(verticeCount):
     return [chr(65 + i) for i in range(verticeCount)]

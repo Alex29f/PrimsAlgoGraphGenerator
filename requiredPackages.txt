@@ -1,4 +1,5 @@
 Required packages for this project are NetworkX and Matplotlib 
+tkinter and random library is aslo used in this project
 to intall them run this command in terminal 
 
 python -m pip install networkx matplotlib

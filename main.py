@@ -1,10 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-from generateGraph import generateGraph
-from generateGraph import drawGraph
-#from PIL import Image, ImageTk
-#import gc
-#from drawGraph import drawGraph
+import graphFunctions
 
 def main():
     root = Tk()
@@ -24,40 +20,62 @@ def main():
     verticesCount = ttk.Entry(inputFrm, textvariable=verticesVar)
     verticesCount.pack(side="top")
 
-    imageFrm = ttk.Frame(root, padding=2)
-    imageFrm.pack(expand=True, fill=BOTH)
-    label = Label(imageFrm)
-    label.pack(expand=True, fill=BOTH)  
-
     mstLabel = ttk.Label(frm, text="MST weight will be shown here")
     mstLabel.pack(side="top", pady=5)
     def generateBtnClick():
         try:
             vertices = verticesVar.get()
             if 7 <= int(vertices) <= 15:
-                G, mstweight, startVertex = generateGraph(vertices)
+                G, mstweight, startVertex = graphFunctions.generateGraph(vertices)
                 print("mstweight from ttk", mstweight)
                 mstLabel.config(text=f"MST weight: {mstweight}", foreground="green")
-                drawGraph(G, startVertex)
-                # uncomment this portion and drawGraph2 function for the graph to be drawn in tkinter window not new window
-                # photo = ImageTk.PhotoImage(graph_image)
-                # label.config(image=photo)
-                # label.image = photo
+                graphFunctions.drawGraph(G, startVertex)
             else:
-
                 mstLabel.config(text="Vertex count should be 7 to 15", foreground="red")
         except TclError:
             mstLabel.config(text="Vertex should be a number 7-15", foreground="red")
 
-
+    
     ttk.Button(inputFrm, text="Generate Graph", command=generateBtnClick, style='Green.TButton').pack(side="top", padx=10, pady=5)
 
+    inputFrm = ttk.Frame(root, padding=10)
+    inputFrm.pack(side="top", fill="x")
+
+    vertex1Frm = ttk.Frame(inputFrm, padding=5)
+    vertex1Frm.pack(side="left", fill="x", expand=True)
+    ttk.Label(vertex1Frm, text="Vertex 1").pack(side="top")
+    vertex1Var = StringVar()
+    ttk.Entry(vertex1Frm, textvariable=vertex1Var).pack(side="top")
+
+    vertex2Frm = ttk.Frame(inputFrm, padding=5)
+    vertex2Frm.pack(side="left", fill="x", expand=True)
+    ttk.Label(vertex2Frm, text="Vertex 2").pack(side="top")
+    vertex2Var = StringVar()
+    ttk.Entry(vertex2Frm, textvariable=vertex2Var).pack(side="top")
+
+    weightFrm = ttk.Frame(inputFrm, padding=5)
+    weightFrm.pack(side="left", fill="x", expand=True)
+    ttk.Label(weightFrm, text="Weight").pack(side="top")
+    weightVar = StringVar()
+    ttk.Entry(weightFrm, textvariable=weightVar).pack(side="top")
+
+    buttonFrm = ttk.Frame(root, padding=10)
+    buttonFrm.pack(side="top", fill="x")
+    ttk.Button(buttonFrm, text="Remove Vertex", command=lambda: graphFunctions.removeVertex(vertex1Var.get()), style='TButton').pack(side="left", padx=5,expand=True)
+    ttk.Button(buttonFrm, text="Add Vertex", command=lambda: graphFunctions.addVertex(vertex1Var.get()), style='TButton').pack(side="left", padx=5,expand=True)
+    ttk.Button(buttonFrm, text="Remove Edge", command=lambda: graphFunctions.removeEdge(vertex1Var.get(), vertex2Var.get()), style='TButton').pack(side="left", padx=5,expand=True)
+    ttk.Button(buttonFrm, text="Add Edge", command=lambda: graphFunctions.addEdgeGUI(vertex1Var.get(), vertex2Var.get(), weightVar.get()), style='TButton').pack(side="left", padx=5,expand=True)
+    ttk.Button(buttonFrm, text="Edit Edge Weight", command=lambda: graphFunctions.editEdgeWeight(vertex1Var.get(), vertex2Var.get(), weightVar.get()), style='TButton').pack(side="left", padx=5,expand=True)
+    infoFrm = ttk.Frame(root, padding=10)
+    infoFrm.pack(side="top", fill="x")
+    ttk.Label(infoFrm, text="If you want to add or remove Vertex use only vertex1 field").pack(side="top")
     quitFrm = ttk.Frame(root, padding=10)
     quitFrm.pack(side=BOTTOM, fill=X)
     quitButton = ttk.Button(quitFrm, text="Quit", command=root.destroy, style='Red.TButton')
     quitButton.pack(side=BOTTOM)
 
     root.mainloop()
+
 
 if __name__ == "__main__":
     main()

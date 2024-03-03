@@ -1,13 +1,9 @@
 import networkx as nx
 import random
 import matplotlib.pyplot as plt
-#import io ##do this for inserting image in tkinter window 
-#from PIL import Image
-
-def verticeLetters(verticeCount):
-    return [chr(65 + i) for i in range(verticeCount)]
 fig = None
 ax = None
+
 def drawGraph(G, startVertex):
     global fig, ax
     if fig is None or ax is None:
@@ -21,31 +17,9 @@ def drawGraph(G, startVertex):
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, ax=ax)
     plt.show()
 
-#uncomment this code if you want the graph to be drawn into the tkinter window
-#def drawGraph2(G, startVertex):
-    #plt.figure(figsize=(12, 10))
-    #pos = nx.spring_layout(G)
-    #node_colors = ['green' if node == startVertex else 'lightblue' for node in G.nodes()]
-    #nx.draw(G, pos, with_labels=True, node_color=node_colors, edge_color='gray', width=2)
-    #edge_labels = nx.get_edge_attributes(G, 'weight')
-    #nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
-    #buf = io.BytesIO()
-    #plt.savefig(buf, format='png')
-    #buf.seek(0)
-    #plt.clf()
-    #plt.cla()
-    #plt.close()
-    #img = Image.open(buf)
-    #return img
-
-def addEdge(G, v1, v2, weight):
-    if G.degree[v1] < 5 and G.degree[v2] < 5 and not G.has_edge(v1, v2):
-        G.add_edge(v1, v2, weight=weight)
-        return True
-    return False
-
 def generateGraph(verticeCount):
-    G = nx.Graph()
+    global G,startVertex
+    G=nx.Graph()
     vertices = verticeLetters(verticeCount)
     G.add_nodes_from(vertices)
     # virsotņu inicializācija svaru vēlākai implementācijai
@@ -108,4 +82,56 @@ def generateGraph(verticeCount):
     print("MST val:", mstweight)
     #drawGraph(G, startVertex)
     return G, mstweight, startVertex
-    
+
+def verticeLetters(verticeCount):
+    return [chr(65 + i) for i in range(verticeCount)]
+
+def addEdge(G, v1, v2, weight):
+    if G.degree[v1] < 5 and G.degree[v2] < 5 and not G.has_edge(v1, v2):
+        G.add_edge(v1, v2, weight=weight)
+        return True
+    return False
+
+def removeVertex(v):
+    if v == startVertex:
+        print("StartVertex cant be removed")
+        return
+    if v in G:
+        G.remove_node(v)
+        drawGraph(G,startVertex)
+        print("removed")
+    else:
+        print("Fail to remove")
+
+def addVertex(v):
+    if v not in G:
+        G.add_node(v)
+        drawGraph(G,startVertex)
+        print("Added")
+    else:
+        print("Fail to add")
+
+
+def removeEdge(v1, v2):
+    if G.has_edge(v1, v2):
+       G.remove_edge(v1, v2)
+       drawGraph(G,startVertex)
+       print("Edge removed")
+    else:
+       print("Failed to removeEdge")
+
+def addEdgeGUI(v1, v2, weight): 
+    if not G.has_edge(v1, v2):
+        G.add_edge(v1, v2, weight=weight)
+        drawGraph(G,startVertex)
+        print("Edge added")
+    else:
+        print("Failed to add")
+
+def editEdgeWeight(v1, v2, weight):
+    if G.has_edge(v1, v2):
+        G[v1][v2]['weight'] = weight
+        drawGraph(G,startVertex)
+        print("Edge Weight edited")
+    else:
+        print("failed to edit edge weight")

@@ -1,4 +1,4 @@
-import tkinter as tk
+from tkinter import *
 from tkinter import ttk
 from generateGraph import generateGraph
 from generateGraph import drawGraph
@@ -7,7 +7,7 @@ from generateGraph import drawGraph
 #from drawGraph import drawGraph
 
 def main():
-    root = tk.Tk()
+    root = Tk()
     style = ttk.Style()
     style.configure('Red.TButton', foreground='red')
     style.configure('Green.TButton', foreground='green')
@@ -19,14 +19,14 @@ def main():
     inputFrm = ttk.Frame(frm)
     inputFrm.pack(side="top", fill="x", padx=10, pady=1)
     ttk.Label(inputFrm, text="Enter Amount of Vertices for Graph {7-15}").pack(side="top")
-    verticesVar = tk.StringVar()
+    verticesVar = StringVar()
     verticesCount = ttk.Entry(inputFrm, textvariable=verticesVar)
     verticesCount.pack(side="top")
 
     imageFrm = ttk.Frame(root, padding=2)
-    imageFrm.pack(expand=True, fill=tk.BOTH)
-    label = tk.Label(imageFrm)
-    label.pack(expand=True, fill=tk.BOTH)  
+    imageFrm.pack(expand=True, fill=BOTH)
+    label = Label(imageFrm)
+    label.pack(expand=True, fill=BOTH)  
 
     mstLabel = ttk.Label(frm, text="MST weight will be shown here")
     mstLabel.pack(side="top", pady=5)
@@ -51,9 +51,9 @@ def main():
     ttk.Button(inputFrm, text="Generate Graph", command=generateBtnClick, style='Green.TButton').pack(side="top", padx=10, pady=5)
 
     quit_frame = ttk.Frame(root, padding=10)
-    quit_frame.pack(side=tk.BOTTOM, fill=tk.X)
+    quit_frame.pack(side=BOTTOM, fill=X)
     quit_button = ttk.Button(quit_frame, text="Quit", command=root.destroy, style='Red.TButton')
-    quit_button.pack(side=tk.BOTTOM)
+    quit_button.pack(side=BOTTOM)
 
     root.mainloop()
 

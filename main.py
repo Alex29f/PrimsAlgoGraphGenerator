@@ -50,10 +50,10 @@ def main():
 
     ttk.Button(inputFrm, text="Generate Graph", command=generateBtnClick, style='Green.TButton').pack(side="top", padx=10, pady=5)
 
-    quit_frame = ttk.Frame(root, padding=10)
-    quit_frame.pack(side=BOTTOM, fill=X)
-    quit_button = ttk.Button(quit_frame, text="Quit", command=root.destroy, style='Red.TButton')
-    quit_button.pack(side=BOTTOM)
+    quitFrame = ttk.Frame(root, padding=10)
+    quitFrame.pack(side=BOTTOM, fill=X)
+    quitButton = ttk.Button(quitFrame, text="Quit", command=root.destroy, style='Red.TButton')
+    quitButton.pack(side=BOTTOM)
 
     root.mainloop()
 

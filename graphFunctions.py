@@ -6,7 +6,7 @@ ax = None
 
 def drawGraph(G, startVertex):
     global fig, ax
-    if fig is None or ax is None:
+    if fig is None or not plt.fignum_exists(fig.number):
         fig, ax = plt.subplots(figsize=(12, 10))
     else:
         ax.clear()

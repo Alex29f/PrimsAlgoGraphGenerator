@@ -68,7 +68,7 @@ def generateGraph(verticeCount):
     unique_weights = [4, 5, 6]
     random.shuffle(unique_weights)
 #sakuma virsonei ir pievienotas virsotnes ar loku svariem 4-6 
-    #prima algoritma 3 iteracija atgriezisies pie 2 iteracija ieguta loka
+    #prima algoritma 3 iteracija atgriezisies pie 1 iteracija ieguta loka
     for v in startVertexVertices:
         vertices.remove(v)
         weight = unique_weights.pop()

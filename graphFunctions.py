@@ -12,6 +12,7 @@ def drawGraph(G, startVertex):
         ax.clear()
     if pos is None:
         pos = nx.spring_layout(G)
+    #print(pos, "POS mainiga vert")    
     #pos = nx.spring_layout(G)
     node_colors = ['green' if node == startVertex else 'lightblue' for node in G.nodes()]
     nx.draw(G, pos, with_labels=True, node_color=node_colors, edge_color='gray', width=2, ax=ax)
@@ -111,7 +112,9 @@ def addVertex(v):
     global pos
     if v not in G:
         G.add_node(v)
-        pos=nx.spring_layout(G)
+        oldNodes=list(G.nodes())
+        oldNodes.remove(v)
+        pos=nx.spring_layout(G,pos=pos,fixed=oldNodes)
         drawGraph(G,startVertex)
         print("Added")
     else:

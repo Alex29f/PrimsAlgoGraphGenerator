@@ -97,8 +97,6 @@ def main():
         updateMSTLabel()
     def recalculateVerticePositions():
         graphFunctions.recalculateVerticePos(graphFunctions.G, graphFunctions.startVertex)
-        
-
 
     buttonFrm = ttk.Frame(root, padding=10)
     buttonFrm.pack(side="top", fill="x")

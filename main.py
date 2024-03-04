@@ -99,6 +99,10 @@ def main():
             print("Value of weight not a number")
         graphFunctions.editEdgeWeight(vertex1Var.get(), vertex2Var.get(), weight)
         updateMSTLabel()
+    def recalculateVerticePositions():
+        graphFunctions.recalculateVerticePos(graphFunctions.G, graphFunctions.startVertex)
+        
+
 
     buttonFrm = ttk.Frame(root, padding=10)
     buttonFrm.pack(side="top", fill="x")
@@ -107,6 +111,7 @@ def main():
     ttk.Button(buttonFrm, text="Remove Edge", command=lambda: removeEdgeUpdateMST(), style='TButton').pack(side="left", padx=5,expand=True)
     ttk.Button(buttonFrm, text="Add Edge", command=lambda: addEdgeUpdateMST(), style='TButton').pack(side="left", padx=5,expand=True)
     ttk.Button(buttonFrm, text="Edit Edge Weight", command=lambda: editEdgeUpdateMST(), style='TButton').pack(side="left", padx=5,expand=True)
+    ttk.Button(buttonFrm, text="Recalculate vertice positions", command=lambda:recalculateVerticePositions(), style='TButton').pack(side="left", padx=5,expand=True)
     infoFrm = ttk.Frame(root, padding=10)
     infoFrm.pack(side="top", fill="x")
     ttk.Label(infoFrm, text="If you want to add or remove Vertex use only vertex1 field").pack(side="top")

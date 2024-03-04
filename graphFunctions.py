@@ -3,14 +3,16 @@ import random
 import matplotlib.pyplot as plt
 fig = None
 ax = None
-
+pos=None
 def drawGraph(G, startVertex):
-    global fig, ax
+    global fig, ax, pos
     if fig is None or not plt.fignum_exists(fig.number):
         fig, ax = plt.subplots(figsize=(12, 10))
     else:
         ax.clear()
-    pos = nx.spring_layout(G)
+    if pos is None:
+        pos = nx.spring_layout(G)
+    #pos = nx.spring_layout(G)
     node_colors = ['green' if node == startVertex else 'lightblue' for node in G.nodes()]
     nx.draw(G, pos, with_labels=True, node_color=node_colors, edge_color='gray', width=2, ax=ax)
     edge_labels = nx.get_edge_attributes(G, 'weight')
@@ -18,7 +20,7 @@ def drawGraph(G, startVertex):
     plt.show()
 
 def generateGraph(verticeCount):
-    global G,startVertex
+    global G,startVertex,pos
     G=nx.Graph()
     vertices = verticeLetters(verticeCount)
     G.add_nodes_from(vertices)
@@ -79,6 +81,7 @@ def generateGraph(verticeCount):
 
     mstweight=calcMST(G)
     #drawGraph(G, startVertex)
+    pos=nx.spring_layout(G)
     return G, mstweight, startVertex
 
 def verticeLetters(verticeCount):
@@ -91,19 +94,24 @@ def addEdge(G, v1, v2, weight):
     return False
 
 def removeVertex(v):
+    global pos
     if v == startVertex:
         print("StartVertex cant be removed")
         return
     if v in G:
         G.remove_node(v)
+        if v in pos:
+            del pos[v]
         drawGraph(G,startVertex)
         print("removed")
     else:
         print("Fail to remove")
 
 def addVertex(v):
+    global pos
     if v not in G:
         G.add_node(v)
+        pos=nx.spring_layout(G)
         drawGraph(G,startVertex)
         print("Added")
     else:
@@ -140,4 +148,7 @@ def calcMST(G):
         return mstweight
     else:
         return 0
-    
+def recalculateVerticePos(G,startVertex):
+    global pos
+    pos=nx.spring_layout(G)
+    drawGraph(G,startVertex)

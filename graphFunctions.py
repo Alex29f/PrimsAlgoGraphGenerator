@@ -145,7 +145,7 @@ def editEdgeWeight(v1, v2, weight):
         print("failed to edit edge weight")
 def calcMST(G):
     if nx.is_connected(G):
-        mst = nx.minimum_spanning_tree(G)
+        mst = nx.minimum_spanning_tree(G,algorithm="prim")
         mstweight = sum(mst[u][v]['weight'] for u, v in mst.edges())
         #print("MST val:", mstweight)
         return mstweight

@@ -77,9 +77,7 @@ def generateGraph(verticeCount):
                     weight = random.randint(1, 6)
                 addEdge(G, v, potential_end, weight)
 
-    mst = nx.minimum_spanning_tree(G)
-    mstweight = sum(mst[u][v]['weight'] for u, v in mst.edges())
-    print("MST val:", mstweight)
+    mstweight=calcMST(G)
     #drawGraph(G, startVertex)
     return G, mstweight, startVertex
 
@@ -111,7 +109,6 @@ def addVertex(v):
     else:
         print("Fail to add")
 
-
 def removeEdge(v1, v2):
     if G.has_edge(v1, v2):
        G.remove_edge(v1, v2)
@@ -135,3 +132,12 @@ def editEdgeWeight(v1, v2, weight):
         print("Edge Weight edited")
     else:
         print("failed to edit edge weight")
+def calcMST(G):
+    if nx.is_connected(G):
+        mst = nx.minimum_spanning_tree(G)
+        mstweight = sum(mst[u][v]['weight'] for u, v in mst.edges())
+        #print("MST val:", mstweight)
+        return mstweight
+    else:
+        return 0
+    

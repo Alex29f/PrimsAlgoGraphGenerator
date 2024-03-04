@@ -22,6 +22,14 @@ def main():
 
     mstLabel = ttk.Label(frm, text="MST weight will be shown here")
     mstLabel.pack(side="top", pady=5)
+    def updateMSTLabel():
+        mstweight=graphFunctions.calcMST(graphFunctions.G)
+        if mstweight == 0:
+            mstLabel.config(text="Graph is not connected or cant calculate MST", foreground="red")
+        else:
+            mstLabel.config(text=f"MST weight: {mstweight}", foreground="green")
+            print("MST from update func:", mstweight)
+
     def generateBtnClick():
         try:
             vertices = verticesVar.get()
@@ -59,13 +67,46 @@ def main():
     weightVar = StringVar()
     ttk.Entry(weightFrm, textvariable=weightVar).pack(side="top")
 
+    def addVertexUpdateMST():
+        graphFunctions.addVertex(vertex1Var.get())
+        updateMSTLabel()
+
+    def removeVertexUpdateMST():
+        graphFunctions.removeVertex(vertex1Var.get())
+        updateMSTLabel()
+
+    def addEdgeUpdateMST():
+        try:
+            weight= int(weightVar.get())
+        except ValueError:
+            print("Value of weight not a number")
+    
+        graphFunctions.addEdgeGUI(vertex1Var.get(), vertex2Var.get(), weight)
+        updateMSTLabel()
+
+    def removeEdgeUpdateMST():
+        try:
+            weight= int(weightVar.get())
+        except ValueError:
+            print("Value of weight not a number")        
+        graphFunctions.removeEdge(vertex1Var.get(), vertex2Var.get())
+        updateMSTLabel()
+
+    def editEdgeUpdateMST():
+        try:
+            weight= int(weightVar.get())
+        except ValueError:
+            print("Value of weight not a number")
+        graphFunctions.editEdgeWeight(vertex1Var.get(), vertex2Var.get(), weight)
+        updateMSTLabel()
+
     buttonFrm = ttk.Frame(root, padding=10)
     buttonFrm.pack(side="top", fill="x")
-    ttk.Button(buttonFrm, text="Remove Vertex", command=lambda: graphFunctions.removeVertex(vertex1Var.get()), style='TButton').pack(side="left", padx=5,expand=True)
-    ttk.Button(buttonFrm, text="Add Vertex", command=lambda: graphFunctions.addVertex(vertex1Var.get()), style='TButton').pack(side="left", padx=5,expand=True)
-    ttk.Button(buttonFrm, text="Remove Edge", command=lambda: graphFunctions.removeEdge(vertex1Var.get(), vertex2Var.get()), style='TButton').pack(side="left", padx=5,expand=True)
-    ttk.Button(buttonFrm, text="Add Edge", command=lambda: graphFunctions.addEdgeGUI(vertex1Var.get(), vertex2Var.get(), weightVar.get()), style='TButton').pack(side="left", padx=5,expand=True)
-    ttk.Button(buttonFrm, text="Edit Edge Weight", command=lambda: graphFunctions.editEdgeWeight(vertex1Var.get(), vertex2Var.get(), weightVar.get()), style='TButton').pack(side="left", padx=5,expand=True)
+    ttk.Button(buttonFrm, text="Remove Vertex", command=lambda: removeVertexUpdateMST(), style='TButton').pack(side="left", padx=5,expand=True)
+    ttk.Button(buttonFrm, text="Add Vertex", command=lambda: addVertexUpdateMST(), style='TButton').pack(side="left", padx=5,expand=True)
+    ttk.Button(buttonFrm, text="Remove Edge", command=lambda: removeEdgeUpdateMST(), style='TButton').pack(side="left", padx=5,expand=True)
+    ttk.Button(buttonFrm, text="Add Edge", command=lambda: addEdgeUpdateMST(), style='TButton').pack(side="left", padx=5,expand=True)
+    ttk.Button(buttonFrm, text="Edit Edge Weight", command=lambda: editEdgeUpdateMST(), style='TButton').pack(side="left", padx=5,expand=True)
     infoFrm = ttk.Frame(root, padding=10)
     infoFrm.pack(side="top", fill="x")
     ttk.Label(infoFrm, text="If you want to add or remove Vertex use only vertex1 field").pack(side="top")

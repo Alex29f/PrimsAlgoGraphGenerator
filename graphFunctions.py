@@ -71,13 +71,13 @@ def generateGraph(verticeCount):
     print("namedVertices", namedVertices)
     for v in G.nodes:
         while G.degree[v] < 2:
-            potential_end = random.choice(list(G.nodes))
-            if v != potential_end and G.degree[potential_end] < 5:
-                if potential_end in namedVertices or v in namedVertices:
+            potentialEnd = random.choice(list(G.nodes))
+            if v != potentialEnd and G.degree[potentialEnd] < 5:
+                if potentialEnd in namedVertices or v in namedVertices:
                     weight = random.randint(7, 10)
                 else:
                     weight = random.randint(1, 6)
-                addEdge(G, v, potential_end, weight)
+                addEdge(G, v, potentialEnd, weight)
 
     mstweight=calcMST(G)
     #drawGraph(G, startVertex)

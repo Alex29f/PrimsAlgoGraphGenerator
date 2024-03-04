@@ -84,11 +84,7 @@ def main():
         graphFunctions.addEdgeGUI(vertex1Var.get(), vertex2Var.get(), weight)
         updateMSTLabel()
 
-    def removeEdgeUpdateMST():
-        try:
-            weight= int(weightVar.get())
-        except ValueError:
-            print("Value of weight not a number")        
+    def removeEdgeUpdateMST():     
         graphFunctions.removeEdge(vertex1Var.get(), vertex2Var.get())
         updateMSTLabel()
 

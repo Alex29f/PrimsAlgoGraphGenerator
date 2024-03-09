@@ -13,12 +13,19 @@ def drawGraph(G, startVertex):
     if pos is None:
         pos = nx.spring_layout(G)
     #print(pos, "POS mainiga vert")    
-    #pos = nx.spring_layout(G)
     node_colors = ['green' if node == startVertex else 'lightblue' for node in G.nodes()]
     nx.draw(G, pos, with_labels=True, node_color=node_colors, edge_color='gray', width=2, ax=ax)
     edge_labels = nx.get_edge_attributes(G, 'weight')
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, ax=ax, rotate=False)
     plt.show()
+def drawMST():
+    T = nx.minimum_spanning_tree(G,algorithm="prim")
+    nx.draw_networkx_edges(T, pos, edge_color="red", width=3)
+    edge_labels = nx.get_edge_attributes(G, 'weight') #ja nav šis tad mst zīmē pa virsu svariem
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, ax=ax, rotate=False)
+    plt.show()
+def removeDrawnMST():
+    drawGraph(G,startVertex)
 
 def generateGraph(verticeCount):
     global G,startVertex,pos
@@ -42,13 +49,13 @@ def generateGraph(verticeCount):
     startVertexVerticesCount = random.randint(1, defaultVerticeCount) 
     startVertexVertices = random.sample(vertices, startVertexVerticesCount)
     #print("startVertexVertices:", startVertexVertices)
-    unique_weights = [4, 5, 6]
-    random.shuffle(unique_weights)
+    uniqueWeights = [4, 5, 6]
+    random.shuffle(uniqueWeights)
 #sakuma virsonei ir pievienotas virsotnes ar loku svariem 4-6 
     #prima algoritma 3 iteracija atgriezisies pie 1 iteracija ieguta loka
     for v in startVertexVertices:
         vertices.remove(v)
-        weight = unique_weights.pop()
+        weight = uniqueWeights.pop()
         addEdge(G, startVertex, v, weight)
 
     # 2. nosacijuma implementacija - 2 soli jaizvelas starp 2 vienadam vertibam

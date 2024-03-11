@@ -17,8 +17,9 @@ graphFunctions.py also contains functions that handle edge, vertex addition or r
 # main.py
 Contains code for the GUI.
 # RequiredPackages
-[Matplotlib](https://matplotlib.org/)
-[NetworkX](https://networkx.org/)
+[Matplotlib](https://matplotlib.org/),
+[NetworkX](https://networkx.org/).
+
 Already with Python3 - [Tkinter],[random]
 
 # Latvian
@@ -40,6 +41,7 @@ graphFunctions.py satur arī funkcijas loku un virsotņu pievienošanai, noņem�
 # main.py
 Satur kodu ar grafisko lietotāja saskarni.
 # RequiredPackages
-[Matplotlib](https://matplotlib.org/)
-[NetworkX](https://networkx.org/)
+[Matplotlib](https://matplotlib.org/),
+[NetworkX](https://networkx.org/).
+
 Already with Python3 - [Tkinter],[random]

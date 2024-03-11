@@ -1,2 +1,5 @@
 withoutInterface.py
 __pycache__
+GraphGeneratorForPrims.spec
+dist
+build

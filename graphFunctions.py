@@ -11,7 +11,7 @@ def drawGraph(G, startVertex):
     else:
         ax.clear()
     if pos is None:
-        pos = nx.spring_layout(G)
+        pos = nx.spring_layout(G)    
     #print(pos, "POS mainiga vert")    
     node_colors = ['green' if node == startVertex else 'lightblue' for node in G.nodes()]
     nx.draw(G, pos, with_labels=True, node_color=node_colors, edge_color='gray', width=2, ax=ax)
@@ -39,18 +39,20 @@ def generateGraph(verticeCount):
     nextVertex = random.choice(vertices)# virsotne uz kuru paries prima algoritms
     #print("nextVert:", nextVertex)
     vertices.remove(nextVertex)
-    startWeight = random.randint(1, 2) # prima algoritma 1.iteracija vienmer izvelesies so svaru
+    startWeight = 1#random.randint(1, 2) # prima algoritma 1.iteracija vienmer izvelesies so svaru
     addEdge(G, startVertex, nextVertex, startWeight)
 
     #sākuma virsotnes loku pievienošana ta lai velak varetu 
     defaultVerticeCount=3
     if verticeCount==7: #grafam ar 7 virsotnem nebus liekas virsotnes ja nesamazinas lielumu
-        defaultVerticeCount=2        
+        defaultVerticeCount=1
+    elif verticeCount==8:
+        defaultVerticeCount=2
     startVertexVerticesCount = random.randint(1, defaultVerticeCount) 
     startVertexVertices = random.sample(vertices, startVertexVerticesCount)
     #print("startVertexVertices:", startVertexVertices)
-    uniqueWeights = [4, 5, 6]
-    random.shuffle(uniqueWeights)
+    uniqueWeights = [5,4,3]
+    #random.shuffle(uniqueWeights)
 #sakuma virsonei ir pievienotas virsotnes ar loku svariem 4-6 
     #prima algoritma 3 iteracija atgriezisies pie 1 iteracija ieguta loka
     for v in startVertexVertices:
@@ -63,7 +65,7 @@ def generateGraph(verticeCount):
     #print("nextVertexVertices:", nextVertexVertices)
     for v in nextVertexVertices:
         vertices.remove(v)
-        addEdge(G, nextVertex, v, 3)
+        addEdge(G, nextVertex, v, 2)
 
     #1. nosacijuma implementacija - jaizvelas vai atjaunot iezimes vertibu vai ne
     vertexstep1 = random.choice(vertices)
@@ -75,12 +77,21 @@ def generateGraph(verticeCount):
     G.add_edge(vertexstep1, startVertex, weight=randomWeightS1) 
     G.add_edge(vertexstep1,randomNextVertexVertex, weight=randomWeightS1) 
     #sakums 4 sola implementacija kur vajag panakt ka meklejot virsones visas jau ir ieklautas karkasa un iezimes neatjauno
-    namedVertices = [vertexstep1, nextVertex, startVertex] + nextVertexVertices + startVertexVertices
+    nextVertexVertices.remove(randomNextVertexVertex)
+    nextVertexVertex2 = nextVertexVertices[0]
+    print("hello from next vvertex vertex2:", nextVertexVertex2)
+    vertexStep4=random.choice(vertices)
+    vertices.remove(vertexStep4)
+    weight4=random.randint(7, 10)
+    G.add_edge(vertexStep4, nextVertex, weight=weight4) 
+    G.add_edge(vertexStep4,nextVertexVertex2, weight=6)
+
+    namedVertices = [vertexStep4, vertexstep1, nextVertex, startVertex, randomNextVertexVertex, nextVertexVertex2] + startVertexVertices
     #print("namedVertices", namedVertices)
     for v in G.nodes:
         while G.degree[v] < 2:
             potentialEnd = random.choice(list(G.nodes))
-            if v != potentialEnd and G.degree[potentialEnd] < 5:
+            if v != potentialEnd and G.degree[potentialEnd] < 5 and potentialEnd != vertexStep4:
                 if potentialEnd in namedVertices or v in namedVertices:
                     weight = random.randint(7, 10)
                 else:

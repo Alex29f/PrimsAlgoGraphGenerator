@@ -3,3 +3,4 @@ __pycache__
 GraphGeneratorForPrims.spec
 dist
 build
+oconsole.spec

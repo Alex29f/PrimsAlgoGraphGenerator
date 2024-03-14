@@ -1,26 +1,27 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
-import graphFunctions
+from graphFunctions import GraphFunctions
 
 def main():
+    graph=GraphFunctions()
     def quit():#aizver ari plt logu
-        if graphFunctions.plt.get_fignums():
-            graphFunctions.plt.close()
+        if graph.pltOpen():
+            graph.closePLT()
         root.destroy()
     def checkIfGraphCreated():
-        if graphFunctions.plt.get_fignums():
+        if graph.pltOpen():
             return True
         else:
             return messagebox.showerror(title="Graph not Created", message="Graph not Created")
     def drawMST():
         if checkIfGraphCreated()!=True:
             return
-        graphFunctions.drawMST()
+        graph.drawMST()
     def removeMST():
         if checkIfGraphCreated()!=True:
             return
-        graphFunctions.removeDrawnMST()
+        graph.drawGraph()
 
     def addVertexUpdateMST():
         if checkIfGraphCreated()!=True:
@@ -28,21 +29,21 @@ def main():
         v=vertex1Var.get()
         if v=="":
             return messagebox.showerror(title="Vertex error", message="Vertex value cannt be empty")
-        if graphFunctions.vertexInGraph(v)==2 or graphFunctions.vertexInGraph(v)==1:
+        if graph.vertexInGraph(v)==2 or graph.vertexInGraph(v)==1:
             return messagebox.showerror(title="Vertex error", message="Vertex already in graph")
         else:
-            graphFunctions.addVertex(v)
+            graph.addVertex(v)
             updateMSTLabel()
     def removeVertexUpdateMST():
         if checkIfGraphCreated()!=True:
             return
         v=vertex1Var.get()
-        if graphFunctions.vertexInGraph(v)==3:
+        if graph.vertexInGraph(v)==3:
             return messagebox.showerror(title="Vertex error", message="Vertex not in graph")
-        elif graphFunctions.vertexInGraph(v)==1:
+        elif graph.vertexInGraph(v)==1:
             return messagebox.showerror(title="StartVertex", message="StartVertex cant be removed")
         else:
-            graphFunctions.removeVertex(v)
+            graph.removeVertex(v)
             updateMSTLabel()
 
     def addEdgeUpdateMST():
@@ -51,9 +52,9 @@ def main():
         v1= vertex2Var.get()
         v2= vertex1Var.get()
         inputWeight= weightVar.get()
-        if graphFunctions.hasEdge(v1,v2):
+        if graph.hasEdge(v1,v2):
             return messagebox.showerror(title="Edge error", message="Edge already exists")
-        elif graphFunctions.vertexInGraph(v1)==3 or graphFunctions.vertexInGraph(v2)==3:
+        elif graph.vertexInGraph(v1)==3 or graph.vertexInGraph(v2)==3:
             return messagebox.showerror(title="Vertice error", message="One or Both of the chosen vertices not in graph")
         elif v1==v2:
             return messagebox.showerror(title="Vertice error", message="Cant connect vertex to itself")
@@ -63,7 +64,7 @@ def main():
                 if inputWeight<=0 or inputWeight>10:
                     return messagebox.showerror(title="Weight error", message="Weight should be between 1-10")
                 else:
-                    graphFunctions.addEdgeGUI(v1,v2,inputWeight)
+                    graph.addEdgeGUI(v1,v2,inputWeight)
                     updateMSTLabel()
             except ValueError:
                 messagebox.showerror(title="Weight error", message="Weight should be type int")
@@ -73,8 +74,8 @@ def main():
             return  
         v1=vertex1Var.get()
         v2=vertex2Var.get()
-        if graphFunctions.hasEdge(v1,v2):
-            graphFunctions.removeEdge(v1,v2)
+        if graph.hasEdge(v1,v2):
+            graph.removeEdge(v1,v2)
             updateMSTLabel()
         else: 
             messagebox.showerror(title="Edge Error", message="No Edge found")
@@ -86,13 +87,13 @@ def main():
         v1= vertex2Var.get()
         v2= vertex1Var.get()
         inputWeight= weightVar.get()
-        if graphFunctions.hasEdge(v1,v2):
+        if graph.hasEdge(v1,v2):
             try:
                 inputWeight = int(weightVar.get())
                 if inputWeight<=0 or inputWeight>10:
                     return messagebox.showerror(title="Weight error", message="Weight should be between 1-10")
                 else:
-                    graphFunctions.editEdgeWeight(v1, v2, inputWeight)
+                    graph.editEdgeWeight(v1, v2, inputWeight)
                     updateMSTLabel()
             except ValueError:
                 messagebox.showerror(title="Weight error", message="Weight should be type int")
@@ -103,10 +104,10 @@ def main():
     def recalculateVerticePositions():
         if checkIfGraphCreated()!=True:
             return
-        graphFunctions.recalculateVerticePos(graphFunctions.G, graphFunctions.startVertex)
+        graph.recalculateVerticePos()
 
     def updateMSTLabel():
-        mstweight=graphFunctions.calcMST(graphFunctions.G)
+        mstweight=graph.calcMST()
         if mstweight == 0:
             mstLabel.config(text="Graph is not connected or cant calculate MST", foreground="red")
         else:
@@ -117,10 +118,10 @@ def main():
         try:
             vertices = verticesVar.get()
             if 7 <= int(vertices) <= 15:
-                G, mstweight, startVertex = graphFunctions.generateGraph(vertices)
+                mstweight = graph.generateGraph(vertices)
                 #print("mstweight from ttk", mstweight)
                 mstLabel.config(text=f"MST weight: {mstweight}", foreground="green")
-                graphFunctions.drawGraph(G, startVertex)
+                graph.drawGraph()
             else:
                 mstLabel.config(text="Vertex count should be 7 to 15", foreground="red")
         except TclError:
@@ -170,13 +171,13 @@ def main():
 
     buttonFrm1 = ttk.Frame(frm, padding=2)
     buttonFrm1.pack(side="top", fill="x",expand=True)
-    ttk.Button(buttonFrm1,width=20, text="Add Vertex", command= addVertexUpdateMST, style='TButton').pack(side="left", expand=True)
-    ttk.Button(buttonFrm1,width=20, text="Add Edge", command= addEdgeUpdateMST, style='TButton').pack(side="left", expand=True)
-    ttk.Button(buttonFrm1,width=20, text="Edit Edge Weight", command= editEdgeUpdateMST, style='TButton').pack(side="left", expand=True)
+    ttk.Button(buttonFrm1,width=20, text="Add Vertex", command=addVertexUpdateMST, style='TButton').pack(side="left", expand=True)
+    ttk.Button(buttonFrm1,width=20, text="Add Edge", command=addEdgeUpdateMST, style='TButton').pack(side="left", expand=True)
+    ttk.Button(buttonFrm1,width=20, text="Edit Edge Weight", command=editEdgeUpdateMST, style='TButton').pack(side="left", expand=True)
     buttonFrm2 = ttk.Frame(frm, padding=2)
     buttonFrm2.pack(side="top", fill="x",expand=True)
-    ttk.Button(buttonFrm2,width=20, text="Remove Vertex", command= removeVertexUpdateMST, style='TButton').pack(side="left", expand=True)
-    ttk.Button(buttonFrm2,width=20, text="Remove Edge", command= removeEdgeUpdateMST, style='TButton').pack(side="left", expand=True)
+    ttk.Button(buttonFrm2,width=20, text="Remove Vertex", command=removeVertexUpdateMST, style='TButton').pack(side="left", expand=True)
+    ttk.Button(buttonFrm2,width=20, text="Remove Edge", command=removeEdgeUpdateMST, style='TButton').pack(side="left", expand=True)
     ttk.Button(buttonFrm2,width=20, text="Recalculate vertices", command=recalculateVerticePositions, style='TButton').pack(side="left", expand=True)
 
     infoFrm = ttk.Frame(frm, padding=2)
@@ -185,8 +186,8 @@ def main():
 
     mstFrm=ttk.Frame(frm, padding=2)
     mstFrm.pack(side="top", fill="x",expand=True)
-    ttk.Button(mstFrm,width=20, text="Show MST", command= drawMST, style='Green.TButton').pack(side="left", expand=True)
-    ttk.Button(mstFrm,width=20, text="Hide MST", command= removeMST, style='Red.TButton').pack(side="left", expand=True)
+    ttk.Button(mstFrm,width=20, text="Show MST", command=drawMST, style='Green.TButton').pack(side="left", expand=True)
+    ttk.Button(mstFrm,width=20, text="Hide MST", command=removeMST, style='Red.TButton').pack(side="left", expand=True)
     quitFrm = ttk.Frame(root, padding=1)
     quitFrm.pack(side=BOTTOM, fill="x")
     quitButton = ttk.Button(quitFrm, text="Quit", command=quit, style='Red.TButton')

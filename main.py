@@ -126,6 +126,16 @@ def main():
                 mstLabel.config(text="Vertex count should be 7 to 15", foreground="red")
         except TclError:
             mstLabel.config(text="Vertex should be a number 7-15", foreground="red")
+    
+    def generate20Graphs():
+        try:
+            vertices = verticesVar.get()
+            if 7 <= int(vertices) <= 15:
+                graph.generateGraphs(vertices)
+            else:
+                mstLabel.config(text="Vertex count should be 7 to 15", foreground="red")
+        except TclError:
+            mstLabel.config(text="Vertex should be a number 7-15", foreground="red")
 
     root = Tk()
     root.title("Specific Weight Graph Generator for Prims Algorithm")
@@ -147,7 +157,7 @@ def main():
     mstLabel = ttk.Label(frm, text="MST weight will be shown here")
     mstLabel.pack(side="top", pady=1)
     ttk.Button(inputFrm, text="Generate Graph", command=generateBtnClick, style='Green.TButton').pack(side="top", padx=2, pady=2)
-
+    ttk.Button(inputFrm, text="Generate 20 Graphs", command=generate20Graphs, style='Green.TButton').pack(side="top", padx=2, pady=2)
     inputFrm2 = ttk.Frame(frm, padding=1)
     inputFrm2.pack(side="top", fill="x",expand=True)
 

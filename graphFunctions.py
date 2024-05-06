@@ -1,6 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import random
+import os
 
 class GraphFunctions:
     def __init__(self):
@@ -14,13 +15,24 @@ class GraphFunctions:
             self.fig, self.ax = plt.subplots(figsize=(12, 10))
         else:
             self.ax.clear()
-        if self.pos is None:
-            self.pos = nx.spring_layout(self.G) 
+        #if self.pos is None:
+        #    self.pos = nx.spring_layout(self.G) 
         node_colors = ['green' if node == self.startVertex else 'lightblue' for node in self.G.nodes()]
         nx.draw(self.G, self.pos, with_labels=True, node_color=node_colors, edge_color='gray', width=2, ax=self.ax)
         edge_labels = nx.get_edge_attributes(self.G, 'weight')
         nx.draw_networkx_edge_labels(self.G, self.pos, edge_labels=edge_labels, ax=self.ax, rotate=False)
         plt.show()
+    def drawGraph2(self):
+        if self.fig is None or not plt.fignum_exists(self.fig.number):
+            self.fig, self.ax = plt.subplots(figsize=(12, 10))
+        else:
+            self.ax.clear()
+        #if self.pos is None:
+        #    self.pos = nx.spring_layout(self.G) 
+        node_colors = ['green' if node == self.startVertex else 'lightblue' for node in self.G.nodes()]
+        nx.draw(self.G, self.pos, with_labels=True, node_color=node_colors, edge_color='gray', width=2, ax=self.ax)
+        edge_labels = nx.get_edge_attributes(self.G, 'weight')
+        nx.draw_networkx_edge_labels(self.G, self.pos, edge_labels=edge_labels, ax=self.ax, rotate=False)
     def drawMST(self):
         T = nx.minimum_spanning_tree(self.G,algorithm="prim")
         nx.draw_networkx_edges(T, self.pos, edge_color="red", width=3)
@@ -191,3 +203,17 @@ class GraphFunctions:
             return False
     def closePLT(self):
         plt.close()
+    def generateGraphs(self, verticesCount):
+        vertices= verticesCount
+        if os.path.exists("Grafi testiem"):
+            pass
+        else:
+            os.makedirs("Grafi testiem")
+        for i in range(1,21):
+            mstweight=self.generateGraph(vertices)
+            print(mstweight)
+            fileName=f"test_{i}_MST_{mstweight}"
+            filePath=os.path.join("Grafi testiem", fileName)
+            self.drawGraph2()
+            self.fig.savefig(filePath)
+       
